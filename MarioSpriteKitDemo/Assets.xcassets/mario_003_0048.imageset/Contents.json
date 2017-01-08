@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "Spaceship.png"
+      "filename" : "mario_003_0048.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
