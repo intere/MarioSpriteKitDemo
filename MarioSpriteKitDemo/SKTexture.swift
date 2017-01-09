@@ -6,24 +6,53 @@ public extension SKTexture {
 
     /// Mario Standing Still Texture
     public static var mario: SKTexture {
-        return SKTexture(imageNamed: "mario_003_0043")
+        return SKTexture(image: #imageLiteral(resourceName: "mario_003_0043"))
     }
 
     /// The mario textures
-    public static var marioRunTextures: [SKTexture] {
+    public static var marioRun: [SKTexture] {
         return loadMarioTextures(from: 43, to: 47)
     }
 
     /// The brick texture
-    public static var brickTexture: SKTexture {
-        return SKTexture(imageNamed: "brick")
+    public static var brick: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "brick"))
+    }
+
+    /// The texture for a question block
+    public static var block: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "item_block"))
+    }
+
+    /// The texture for a question block that's been used
+    public static var spentBlock: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "item_used"))
     }
 
     /// The textures for mario jumping
-    public static var marioJumpTextures: [SKTexture] {
+    public static var marioJump: [SKTexture] {
         return loadMarioTextures(from: 46, to: 50)
     }
 
+    /// The textures for the bushes
+    public static var bushes: [SKTexture] {
+        return [ SKTexture(image: #imageLiteral(resourceName: "bush_1")), SKTexture(image: #imageLiteral(resourceName: "bush_2")) ]
+    }
+
+    /// The textures for the clouds
+    public static var clouds: [SKTexture] {
+        return [ SKTexture(image: #imageLiteral(resourceName: "cloud_1")), SKTexture(image: #imageLiteral(resourceName: "cloud_2")) ]
+    }
+
+    /// The textures for the mounds
+    public static var mounds: [SKTexture] {
+        return [ SKTexture(image: #imageLiteral(resourceName: "mound_1")), SKTexture(image: #imageLiteral(resourceName: "mound_2")) ]
+    }
+
+    /// The castle
+    public static var castle: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "castle"))
+    }
 }
 
 // MARK: - Helpers

@@ -16,15 +16,18 @@ struct Constants {
 /// Responsible for managing the Scene
 public class GameScene: SKScene {
     var mario = Mario.shared
+    var engine: LevelEngine?
 
-    public init(view: SKView) {
+    public init(view: SKView, spriteModels: [SpriteModel]) {
         super.init(size: view.frame.size)
-        setUp()
+        engine = LevelEngine(scene: self, spriteModels: spriteModels)
+        engine?.renderAll()
+//        setUp()
     }
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setUp()
+//        setUp()
     }
 }
 
@@ -54,36 +57,30 @@ extension GameScene {
 
 private extension GameScene {
 
-    /// Sets up the scene
-    func setUp() {
-        addMario()
-        addBricks()
-    }
+//    /// Sets up the scene
+//    func setUp() {
+//        addMario()
+//        addBricks()
+//    }
+//
+//    /// Adds Mario to the Scene
+//    func addMario() {
+//        let sprite = mario.sprite
+//        sprite.position = CGPoint(x: frame.minX + sprite.frame.size.width, y: frame.midY)
+//        addChild(sprite)
+//    }
+//
+//    /// Adds the bricks to the bottom of the scene
+//    func addBricks() {
+//        let brickNode = Brick().sprite
+//        let brickCount = Int(size.width / brickNode.size.width) + 2  // Let's add a couple extra
+//
+//        for i in 0..<brickCount {
+//            let brick = Brick().sprite
+//            brick.position = CGPoint(x: frame.minX + CGFloat(i) * brickNode.size.width, y: frame.minY)
+//            addChild(brick)
+//        }
+//    }
 
-    /// Adds Mario to the Scene
-    func addMario() {
-        let sprite = mario.sprite
-        sprite.position = CGPoint(x: frame.minX + sprite.frame.size.width, y: frame.midY)
-        addChild(sprite)
-    }
-
-    /// Adds the bricks to the bottom of the scene
-    func addBricks() {
-        guard let brickNode = Brick().sprite else {
-            print("ERROR: Couldn't get the brick sprite")
-            return
-        }
-        let brickCount = Int(size.width / brickNode.size.width) + 2  // Let's add a couple extra
-
-        for i in 0..<brickCount {
-            guard let brick = Brick().sprite else {
-                print("ERROR: Couldn't get the brick sprite")
-                continue
-            }
-            brick.position = CGPoint(x: frame.minX + CGFloat(i) * brickNode.size.width, y: frame.minY)
-            addChild(brick)
-        }
-    }
-    
 }
 

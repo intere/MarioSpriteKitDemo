@@ -3,25 +3,21 @@ import SpriteKit
 
 
 /// Manages the Player: Mario
-public class Mario {
+public class Mario: SpriteRenderable {
+
     static let shared = Mario()
 
-    public let sprite = Mario.createSprite()
+    public var sprite: SKSpriteNode = Mario.createSprite()
 
     struct Actions {
-        static let run = SKAction.animate(with: SKTexture.marioRunTextures, timePerFrame: 0.1, resize: true, restore: true)
-        static let jump = SKAction.animate(with: SKTexture.marioJumpTextures, timePerFrame: 0.1, resize: true, restore: true)
+        static let run = SKAction.animate(with: SKTexture.marioRun, timePerFrame: 0.1, resize: true, restore: true)
+        static let jump = SKAction.animate(with: SKTexture.marioJump, timePerFrame: 0.1, resize: true, restore: true)
         static let stop = SKAction.animate(withNormalTextures: [SKTexture.mario], timePerFrame: 0.1, resize: true, restore: true)
         static let turnLeft = SKAction.scaleX(to: -Constants.scale, duration: 0.1)
         static let turnRight = SKAction.scaleX(to: Constants.scale, duration: 0.1)
     }
 
     internal var state: MotionState = .StoppedRight
-//    {
-//        didSet {
-//            print("State: \(state)")
-//        }
-//    }
 
     enum MotionState: Int {
         case StoppedRight = 0
@@ -32,6 +28,21 @@ public class Mario {
         case JumpLeft
     }
 
+    /// Creates the Sprite
+    ///
+    /// - Returns: A SpriteNode for mario.
+    public static func createSprite() -> SKSpriteNode {
+        let node = SKSpriteNode(texture: SKTexture.mario)
+        node.setScale(Constants.scale)
+
+        node.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
+        node.physicsBody?.affectedByGravity = true
+        node.physicsBody?.density = 0.5
+        node.physicsBody?.isDynamic = true
+        node.physicsBody?.allowsRotation = false
+
+        return node
+    }
 }
 
 // MARK: - API
@@ -63,7 +74,6 @@ public extension Mario {
         sprite.run(SKAction.repeatForever(Actions.run))
         state = .RunLeft
     }
-
 
     /// Jumps in the air
     func jump() {
@@ -102,6 +112,9 @@ private extension Mario {
         }
     }
 
+    /// Invokes the correct action based on the provided state
+    ///
+    /// - Parameter state: The state to reset back to
     func goBack(to state: MotionState) {
         switch state {
         case .RunLeft:
@@ -117,6 +130,7 @@ private extension Mario {
         }
     }
 
+    /// Stops looking to the left
     func stopLeft() {
         sprite.removeAllActions()
         sprite.run(Actions.turnLeft)
@@ -124,27 +138,12 @@ private extension Mario {
         state = .StoppedLeft
     }
 
+    /// Stops looking to the right
     func stopRight() {
         sprite.removeAllActions()
         sprite.run(Actions.turnRight)
         sprite.run(SKAction.repeatForever(Actions.stop))
         state = .StoppedRight
-    }
-
-    /// Creates the Sprite
-    ///
-    /// - Returns: A SpriteNode for mario.
-    static func createSprite() -> SKSpriteNode {
-        let node = SKSpriteNode(texture: SKTexture.mario)
-        node.setScale(Constants.scale)
-
-        node.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
-        node.physicsBody?.affectedByGravity = true
-        node.physicsBody?.density = 0.5
-        node.physicsBody?.isDynamic = true
-        node.physicsBody?.allowsRotation = false
-
-        return node
     }
 
 }

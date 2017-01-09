@@ -1,21 +1,12 @@
+
 import SpriteKit
 
+class Brick: SpriteRenderable {
 
-class Brick {
-
-    var sprite: SKSpriteNode?
-
-    init() {
-        sprite = Brick.createSprite()
-    }
-}
-
-// MARK: - Helpers
-
-private extension Brick {
+    public var sprite = Brick.createSprite()
 
     static func createSprite() -> SKSpriteNode {
-        let texture = SKTexture.brickTexture
+        let texture = SKTexture.brick
         let node = SKSpriteNode(texture: texture)
         node.setScale(Constants.scale)
 

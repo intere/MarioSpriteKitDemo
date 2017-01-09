@@ -12,11 +12,13 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    let models = [SpriteModel(type: "brick", index: 0), SpriteModel(type: "brick", index: 1), SpriteModel(type: "brick", index: 2, height: 2), SpriteModel(type: "block", index: 3, height: 4) ]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            let scene = GameScene(view: view)
+            let scene = GameScene(view: view, spriteModels: models)
             view.presentScene(scene)
             
             view.ignoresSiblingOrder = true
