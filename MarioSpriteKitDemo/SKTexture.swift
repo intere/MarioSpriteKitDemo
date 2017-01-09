@@ -19,6 +19,16 @@ public extension SKTexture {
         return SKTexture(image: #imageLiteral(resourceName: "brick"))
     }
 
+    /// The "Pad Top"
+    public static var padTop: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "pad_top"))
+    }
+
+    /// The "Pad Bottom"
+    public static var padBottom: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "pad_bottom"))
+    }
+
     /// The texture for a question block
     public static var block: SKTexture {
         return SKTexture(image: #imageLiteral(resourceName: "item_block"))
@@ -77,14 +87,6 @@ private extension SKTexture {
             textures.append(texture)
         }
         return textures
-    }
-
-    /// Loads the textures by name and returns an array
-    ///
-    /// - Parameter imageNames: The names of the image textures you wish to load
-    /// - Returns: The specified textures
-    func loadTextures(imageNames: [String]) -> [SKTexture] {
-        return imageNames.map { SKTexture(imageNamed: $0) }
     }
 
 }

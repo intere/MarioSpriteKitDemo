@@ -23,6 +23,8 @@
 		93AE39CE1E23010F0013E285 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39CD1E23010F0013E285 /* Block.swift */; };
 		93AE39D01E2303D90013E285 /* Bush.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39CF1E2303D90013E285 /* Bush.swift */; };
 		93AE39D21E2304630013E285 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39D11E2304630013E285 /* Array.swift */; };
+		93AE39D41E233CC80013E285 /* PadTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39D31E233CC80013E285 /* PadTop.swift */; };
+		93AE39D61E233F630013E285 /* PadBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39D51E233F630013E285 /* PadBottom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		93AE39CD1E23010F0013E285 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		93AE39CF1E2303D90013E285 /* Bush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bush.swift; sourceTree = "<group>"; };
 		93AE39D11E2304630013E285 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		93AE39D31E233CC80013E285 /* PadTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadTop.swift; sourceTree = "<group>"; };
+		93AE39D51E233F630013E285 /* PadBottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PadBottom.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +191,8 @@
 			children = (
 				9359B7D41E22A9D0001542E3 /* Brick.swift */,
 				93AE39CD1E23010F0013E285 /* Block.swift */,
+				93AE39D31E233CC80013E285 /* PadTop.swift */,
+				93AE39D51E233F630013E285 /* PadBottom.swift */,
 			);
 			name = Foreground;
 			sourceTree = "<group>";
@@ -311,11 +317,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93AE39D41E233CC80013E285 /* PadTop.swift in Sources */,
 				93AE39CC1E22FC610013E285 /* SpriteRenderable.swift in Sources */,
 				9359B7D31E22A9C6001542E3 /* Mario.swift in Sources */,
 				93AE39C81E22C4B80013E285 /* LevelEngine.swift in Sources */,
 				93AE39CA1E22C5BB0013E285 /* SpriteModel.swift in Sources */,
 				9359B7AB1E22A80E001542E3 /* GameScene.swift in Sources */,
+				93AE39D61E233F630013E285 /* PadBottom.swift in Sources */,
 				9359B7D11E22A975001542E3 /* SKTexture.swift in Sources */,
 				9359B7AD1E22A80E001542E3 /* GameViewController.swift in Sources */,
 				93AE39D01E2303D90013E285 /* Bush.swift in Sources */,

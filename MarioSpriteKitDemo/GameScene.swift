@@ -10,7 +10,8 @@ import SpriteKit
 import GameplayKit
 
 struct Constants {
-    static let scale: CGFloat = 2.0
+    static let scale: CGFloat = 1
+    static let marioScale: CGFloat = 2
 }
 
 /// Responsible for managing the Scene
@@ -22,12 +23,10 @@ public class GameScene: SKScene {
         super.init(size: view.frame.size)
         engine = LevelEngine(scene: self, spriteModels: spriteModels)
         engine?.renderAll()
-//        setUp()
     }
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        setUp()
     }
 }
 
@@ -56,31 +55,6 @@ extension GameScene {
 // MARK: - Helpers
 
 private extension GameScene {
-
-//    /// Sets up the scene
-//    func setUp() {
-//        addMario()
-//        addBricks()
-//    }
-//
-//    /// Adds Mario to the Scene
-//    func addMario() {
-//        let sprite = mario.sprite
-//        sprite.position = CGPoint(x: frame.minX + sprite.frame.size.width, y: frame.midY)
-//        addChild(sprite)
-//    }
-//
-//    /// Adds the bricks to the bottom of the scene
-//    func addBricks() {
-//        let brickNode = Brick().sprite
-//        let brickCount = Int(size.width / brickNode.size.width) + 2  // Let's add a couple extra
-//
-//        for i in 0..<brickCount {
-//            let brick = Brick().sprite
-//            brick.position = CGPoint(x: frame.minX + CGFloat(i) * brickNode.size.width, y: frame.minY)
-//            addChild(brick)
-//        }
-//    }
 
 }
 

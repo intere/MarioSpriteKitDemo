@@ -32,6 +32,7 @@ public extension LevelEngine {
     }
 
     public func render(index: Int) {
+        let offset = blockSize / 2
         let x = blockSize * CGFloat(index)
         let models = indices[index]
 
@@ -40,7 +41,7 @@ public extension LevelEngine {
                 continue
             }
             let y = scene.frame.minY + blockSize * CGFloat(model.height)
-            spriteRenderer.sprite.position = CGPoint(x: x, y: y)
+            spriteRenderer.sprite.position = CGPoint(x: x - offset, y: y - offset)
             scene.addChild(spriteRenderer.sprite)
         }
     }
@@ -60,6 +61,8 @@ private extension LevelEngine {
         case cloud = "cloud"
         case mount = "mound"
         case castle = "castle"
+        case padTop = "pad_top"
+        case padBottom = "pad_bottom"
     }
 
     static func createSprite(for model: SpriteModel) -> SpriteRenderable? {
@@ -77,6 +80,10 @@ private extension LevelEngine {
             return Brick()
         case .bush:
             return Bush()
+        case .padBottom:
+            return PadBottom()
+        case .padTop:
+            return PadTop()
         default:
             break
         }
@@ -95,6 +102,7 @@ private extension LevelEngine {
         for model in spriteModels {
             if var array = modelHash[model.index] {
                 array.append(model)
+                modelHash[model.index] = array
             } else {
                 modelHash[model.index] = [model]
             }

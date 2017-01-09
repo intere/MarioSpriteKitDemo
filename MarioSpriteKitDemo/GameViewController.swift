@@ -12,13 +12,42 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
-    let models = [SpriteModel(type: "brick", index: 0), SpriteModel(type: "brick", index: 1), SpriteModel(type: "brick", index: 2, height: 2), SpriteModel(type: "block", index: 3, height: 4) ]
+    let models = [
+        SpriteModel(type: "brick", index: 0, height: 1),
+        SpriteModel(type: "brick", index: 1, height: 1),
+        SpriteModel(type: "brick", index: 2, height: 1),
+        SpriteModel(type: "brick", index: 3, height: 1),
+        SpriteModel(type: "brick", index: 4, height: 1),
+        SpriteModel(type: "brick", index: 5, height: 1),
+        SpriteModel(type: "brick", index: 6, height: 1),
+        SpriteModel(type: "brick", index: 7, height: 1),
+        SpriteModel(type: "brick", index: 8, height: 1),
+        SpriteModel(type: "brick", index: 9, height: 1),
+        SpriteModel(type: "empty", index: 10, height: 1),
+        SpriteModel(type: "empty", index: 11, height: 1),
+        SpriteModel(type: "empty", index: 12, height: 1),
+        SpriteModel(type: "pad_top", index: 13, height: 1),
+        SpriteModel(type: "empty", index: 14, height: 1),
+        SpriteModel(type: "empty", index: 15, height: 1),
+        SpriteModel(type: "empty", index: 16, height: 1),
+        SpriteModel(type: "brick", index: 17, height: 1),
+
+        SpriteModel(type: "bush", index: 7, height: 2),
+
+        SpriteModel(type: "block", index: 4, height: 5),
+        SpriteModel(type: "mario", index: 4, height: 2)
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            let scene = GameScene(view: view, spriteModels: models)
+            var models = [SpriteModel]()
+            self.models.forEach { models.append($0) }
+            for i in 18...250 {
+                models.append(SpriteModel(type: "brick", index: i, height: 1))
+            }
+            let scene = GameScene(view: view, spriteModels: models )
             view.presentScene(scene)
             
             view.ignoresSiblingOrder = true

@@ -18,7 +18,7 @@ public class SpriteModel {
     init(type: String = "", index: Int = 0, height: Int = 0) {
         self.type = type
         self.index = index
-        self.height = 0
+        self.height = height
     }
 }
 

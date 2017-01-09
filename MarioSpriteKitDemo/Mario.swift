@@ -13,8 +13,8 @@ public class Mario: SpriteRenderable {
         static let run = SKAction.animate(with: SKTexture.marioRun, timePerFrame: 0.1, resize: true, restore: true)
         static let jump = SKAction.animate(with: SKTexture.marioJump, timePerFrame: 0.1, resize: true, restore: true)
         static let stop = SKAction.animate(withNormalTextures: [SKTexture.mario], timePerFrame: 0.1, resize: true, restore: true)
-        static let turnLeft = SKAction.scaleX(to: -Constants.scale, duration: 0.1)
-        static let turnRight = SKAction.scaleX(to: Constants.scale, duration: 0.1)
+        static let turnLeft = SKAction.scaleX(to: -Constants.marioScale, duration: 0.1)
+        static let turnRight = SKAction.scaleX(to: Constants.marioScale, duration: 0.1)
     }
 
     internal var state: MotionState = .StoppedRight
@@ -33,7 +33,7 @@ public class Mario: SpriteRenderable {
     /// - Returns: A SpriteNode for mario.
     public static func createSprite() -> SKSpriteNode {
         let node = SKSpriteNode(texture: SKTexture.mario)
-        node.setScale(Constants.scale)
+        node.setScale(Constants.marioScale)
 
         node.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
         node.physicsBody?.affectedByGravity = true
