@@ -17,6 +17,8 @@
 		9359B7D11E22A975001542E3 /* SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9359B7D01E22A975001542E3 /* SKTexture.swift */; };
 		9359B7D31E22A9C6001542E3 /* Mario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9359B7D21E22A9C6001542E3 /* Mario.swift */; };
 		9359B7D51E22A9D0001542E3 /* Brick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9359B7D41E22A9D0001542E3 /* Brick.swift */; };
+		938B3B401E26E76700DB59AA /* PlayerCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B3B3F1E26E76700DB59AA /* PlayerCamera.swift */; };
+		938B3B421E26E79D00DB59AA /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B3B411E26E79D00DB59AA /* SKNode.swift */; };
 		93AE39C81E22C4B80013E285 /* LevelEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39C71E22C4B80013E285 /* LevelEngine.swift */; };
 		93AE39CA1E22C5BB0013E285 /* SpriteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39C91E22C5BB0013E285 /* SpriteModel.swift */; };
 		93AE39CC1E22FC610013E285 /* SpriteRenderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE39CB1E22FC610013E285 /* SpriteRenderable.swift */; };
@@ -52,6 +54,8 @@
 		9359B7D01E22A975001542E3 /* SKTexture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTexture.swift; sourceTree = "<group>"; };
 		9359B7D21E22A9C6001542E3 /* Mario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mario.swift; sourceTree = "<group>"; };
 		9359B7D41E22A9D0001542E3 /* Brick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brick.swift; sourceTree = "<group>"; };
+		938B3B3F1E26E76700DB59AA /* PlayerCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCamera.swift; sourceTree = "<group>"; };
+		938B3B411E26E79D00DB59AA /* SKNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
 		93AE39C71E22C4B80013E285 /* LevelEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelEngine.swift; sourceTree = "<group>"; };
 		93AE39C91E22C5BB0013E285 /* SpriteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteModel.swift; sourceTree = "<group>"; };
 		93AE39CB1E22FC610013E285 /* SpriteRenderable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteRenderable.swift; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 				93AE39C71E22C4B80013E285 /* LevelEngine.swift */,
 				93AE39C91E22C5BB0013E285 /* SpriteModel.swift */,
 				93AE39CB1E22FC610013E285 /* SpriteRenderable.swift */,
+				938B3B3F1E26E76700DB59AA /* PlayerCamera.swift */,
 			);
 			name = Sprites;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			children = (
 				9359B7D01E22A975001542E3 /* SKTexture.swift */,
 				93AE39D11E2304630013E285 /* Array.swift */,
+				938B3B411E26E79D00DB59AA /* SKNode.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -325,9 +331,11 @@
 				9359B7AB1E22A80E001542E3 /* GameScene.swift in Sources */,
 				93AE39D61E233F630013E285 /* PadBottom.swift in Sources */,
 				9359B7D11E22A975001542E3 /* SKTexture.swift in Sources */,
+				938B3B421E26E79D00DB59AA /* SKNode.swift in Sources */,
 				9359B7AD1E22A80E001542E3 /* GameViewController.swift in Sources */,
 				93AE39D01E2303D90013E285 /* Bush.swift in Sources */,
 				93AE39CE1E23010F0013E285 /* Block.swift in Sources */,
+				938B3B401E26E76700DB59AA /* PlayerCamera.swift in Sources */,
 				93AE39D21E2304630013E285 /* Array.swift in Sources */,
 				9359B7A51E22A80E001542E3 /* AppDelegate.swift in Sources */,
 				9359B7D51E22A9D0001542E3 /* Brick.swift in Sources */,

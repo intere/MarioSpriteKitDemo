@@ -21,8 +21,12 @@ public class GameScene: SKScene {
 
     public init(view: SKView, spriteModels: [SpriteModel]) {
         super.init(size: view.frame.size)
-        engine = LevelEngine(scene: self, spriteModels: spriteModels)
-        engine?.renderAll()
+        let engine = LevelEngine(scene: self, spriteModels: spriteModels)
+        engine.renderAll()
+        let camera = PlayerCameraNode(player: mario.sprite, blockSize: engine.blockSize)
+        addChild(camera)
+        self.camera = camera
+        self.engine = engine
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -35,18 +39,30 @@ public class GameScene: SKScene {
 extension GameScene {
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let view = view else {
+            return
+        }
         for touch in touches {
-            let location = touch.location(in: self)
-            if location.y >= frame.size.height / 2 {
+            let location = touch.location(in: view)
+
+            if location.y <= view.frame.size.height / 2 {
                 // User touched upper half of the screen
                 mario.jump()
-            } else if location.x <= frame.size.width / 2 {
+            } else if location.x <= view.frame.size.width / 2 {
                 // User touched left side of the screen
                 mario.runLeft()
             } else {
                 // User touched right side of the screen
                 mario.runRight()
             }
+        }
+    }
+
+    public override func update(_ currentTime: TimeInterval) {
+        super.update(currentTime)
+        
+        for node in children {
+            node.update(currentTime)
         }
     }
 

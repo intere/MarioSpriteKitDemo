@@ -15,6 +15,8 @@ public class Mario: SpriteRenderable {
         static let stop = SKAction.animate(withNormalTextures: [SKTexture.mario], timePerFrame: 0.1, resize: true, restore: true)
         static let turnLeft = SKAction.scaleX(to: -Constants.marioScale, duration: 0.1)
         static let turnRight = SKAction.scaleX(to: Constants.marioScale, duration: 0.1)
+        static let moveRight = SKAction.moveBy(x: 15, y: 0, duration: 0.1)
+        static let moveLeft = SKAction.moveBy(x: -15, y: 0, duration: 0.1)
     }
 
     internal var state: MotionState = .StoppedRight
@@ -51,7 +53,10 @@ public extension Mario {
 
     /// Runs to the Right
     func runRight() {
+        sprite.removeAllActions()
         switch state {
+        case .RunRight:
+            return
         case .JumpLeft, .RunLeft, .StoppedLeft:
             stopRight()
             return
@@ -59,12 +64,17 @@ public extension Mario {
             break
         }
         sprite.run(SKAction.repeatForever(Actions.run))
+        sprite.run(SKAction.repeatForever(Actions.moveRight))
         state = .RunRight
+        print("Run Right")
     }
 
     /// Runs to the Left
     func runLeft() {
+        sprite.removeAllActions()
         switch state {
+        case .RunLeft:
+            return
         case .JumpRight, .RunRight, .StoppedRight:
             stopLeft()
             return
@@ -72,11 +82,14 @@ public extension Mario {
             break
         }
         sprite.run(SKAction.repeatForever(Actions.run))
+        sprite.run(SKAction.repeatForever(Actions.moveLeft))
         state = .RunLeft
+        print("Run Left")
     }
 
     /// Jumps in the air
     func jump() {
+        print("Jump")
         guard state != .JumpRight && state != .JumpLeft else {
             return
         }
@@ -87,6 +100,12 @@ public extension Mario {
         let action = SKAction.applyForce(CGVector(dx: 0, dy: 200), duration: 0.1)
         action.timingMode = .easeOut
         sprite.run(action)
+
+        if state == .JumpLeft {
+            sprite.run(SKAction.repeatForever(Actions.moveLeft))
+        } else if state == .JumpRight {
+            sprite.run(SKAction.repeatForever(Actions.moveRight))
+        }
         sprite.run(Actions.jump) {
             self.sprite.run(SKAction.wait(forDuration: 0.1)) {
                 self.goBack(to: initialState)
@@ -103,9 +122,9 @@ private extension Mario {
     /// Sets the appropriate jump state, based on the current state
     func setJumpState() {
         switch state {
-        case .RunLeft, .StoppedLeft:
+        case .RunLeft:
             state = .JumpLeft
-        case .RunRight, .StoppedRight:
+        case .RunRight:
             state = .JumpRight
         default:
             break
