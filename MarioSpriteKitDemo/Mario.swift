@@ -36,6 +36,7 @@ public class Mario: SpriteRenderable {
     public static func createSprite() -> SKSpriteNode {
         let node = SKSpriteNode(texture: SKTexture.mario)
         node.setScale(Constants.marioScale)
+        node.zPosition = 100
 
         node.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
         node.physicsBody?.affectedByGravity = true
@@ -50,6 +51,11 @@ public class Mario: SpriteRenderable {
 // MARK: - API
 
 public extension Mario {
+
+    func reset() {
+        sprite.removeAllActions()
+        state = .StoppedRight
+    }
 
     /// Runs to the Right
     func runRight() {
@@ -66,7 +72,6 @@ public extension Mario {
         sprite.run(SKAction.repeatForever(Actions.run))
         sprite.run(SKAction.repeatForever(Actions.moveRight))
         state = .RunRight
-        print("Run Right")
     }
 
     /// Runs to the Left
@@ -84,12 +89,10 @@ public extension Mario {
         sprite.run(SKAction.repeatForever(Actions.run))
         sprite.run(SKAction.repeatForever(Actions.moveLeft))
         state = .RunLeft
-        print("Run Left")
     }
 
     /// Jumps in the air
     func jump() {
-        print("Jump")
         guard state != .JumpRight && state != .JumpLeft else {
             return
         }

@@ -17,6 +17,7 @@ class Bush: SpriteRenderable {
     public static func createSprite() -> SKSpriteNode {
         let node = SKSpriteNode(texture: SKTexture.bushes.random)
         node.setScale(Constants.scale)
+        node.zPosition = 1
 
         return node
     }

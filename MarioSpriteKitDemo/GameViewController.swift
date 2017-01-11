@@ -26,11 +26,12 @@ class GameViewController: UIViewController {
         SpriteModel(type: "empty", index: 10, height: 2),
         SpriteModel(type: "empty", index: 11, height: 2),
         SpriteModel(type: "empty", index: 12, height: 2),
-        SpriteModel(type: "pad_top", index: 13, height: 2),
-        SpriteModel(type: "empty", index: 14, height: 2),
+        SpriteModel(type: "empty", index: 13, height: 2),
+        SpriteModel(type: "pad_top", index: 14, height: 2),
         SpriteModel(type: "empty", index: 15, height: 2),
         SpriteModel(type: "empty", index: 16, height: 2),
-        SpriteModel(type: "brick", index: 17, height: 2),
+        SpriteModel(type: "empty", index: 17, height: 2),
+        SpriteModel(type: "empty", index: 18, height: 2),
 
         SpriteModel(type: "bush", index: 7, height: 3),
 
@@ -44,8 +45,11 @@ class GameViewController: UIViewController {
         if let view = self.view as! SKView? {
             var models = [SpriteModel]()
             self.models.forEach { models.append($0) }
-            for i in 18...250 {
+            for i in 19...250 {
                 models.append(SpriteModel(type: "brick", index: i, height: 2))
+                if i % 20 == 0 {
+                    models.append(SpriteModel(type: "brick", index: i, height: (i % 20 != 0) ? 2 : 3 ))
+                }
             }
             let scene = GameScene(view: view, spriteModels: models )
             view.presentScene(scene)

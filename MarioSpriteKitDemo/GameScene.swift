@@ -18,8 +18,10 @@ struct Constants {
 public class GameScene: SKScene {
     var mario = Mario.shared
     var engine: LevelEngine?
+    var spriteModels: [SpriteModel]
 
     public init(view: SKView, spriteModels: [SpriteModel]) {
+        self.spriteModels = spriteModels
         super.init(size: view.frame.size)
         let engine = LevelEngine(scene: self, spriteModels: spriteModels)
         engine.renderAll()
@@ -30,6 +32,7 @@ public class GameScene: SKScene {
     }
 
     required public init?(coder aDecoder: NSCoder) {
+        spriteModels = []
         super.init(coder: aDecoder)
     }
 }
@@ -63,6 +66,19 @@ extension GameScene {
         
         for node in children {
             node.update(currentTime)
+        }
+
+        if mario.sprite.position.y < -50 {
+            print("Mario is dead")
+            for child in children {
+                child.removeAllActions()
+            }
+            Mario.shared.reset()
+            removeAllChildren()
+            guard let view = view else {
+                return
+            }
+            view.presentScene(GameScene(view: view, spriteModels: spriteModels), transition: .doorway(withDuration: 2))
         }
     }
 
