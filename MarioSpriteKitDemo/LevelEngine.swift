@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 public class LevelEngine {
-    var blockSize = Brick().sprite.frame.size.width
+    static let blockSize = Brick().sprite.frame.size.width
     var scene: SKScene
     var indices: [[SpriteModel]]
 
@@ -32,17 +32,16 @@ public extension LevelEngine {
     }
 
     public func render(index: Int) {
-        let offset = blockSize / 2
-        let x = blockSize * CGFloat(index)
         let models = indices[index]
 
         for model in models {
-            guard let spriteRenderer = LevelEngine.createSprite(for: model) else {
+            guard let endIndex = model.endIndex else {
+                let _ = createSprite(for: model, x: index)
                 continue
             }
-            let y = scene.frame.minY + blockSize * CGFloat(model.height)
-            spriteRenderer.sprite.position = CGPoint(x: x - offset, y: y - offset)
-            scene.addChild(spriteRenderer.sprite)
+            for x in index...endIndex {
+                let _ = createSprite(for: model, x: x)
+            }
         }
     }
 
@@ -55,14 +54,33 @@ private extension LevelEngine {
     enum SpriteType: String {
         case empty = "empty"
         case mario = "mario"
+        case goomba = "goomba"
         case block = "block"
         case brick = "brick"
+        case pipe = "pipe"
         case bush = "bush"
         case cloud = "cloud"
         case mount = "mound"
         case castle = "castle"
         case padTop = "pad_top"
         case padBottom = "pad_bottom"
+    }
+
+    func createSprite(for model: SpriteModel, x index: Int) -> SpriteRenderable? {
+        let blockSize = LevelEngine.blockSize
+        let offset = blockSize / 2
+        let x = blockSize * CGFloat(index)
+        let y = scene.frame.minY + blockSize * CGFloat(model.height)
+        guard let spriteRenderer = LevelEngine.createSprite(for: model) else {
+            return nil
+        }
+
+        spriteRenderer.sprite.position = CGPoint(x: x - offset, y: y - offset)
+        scene.addChild(spriteRenderer.sprite)
+        if let enemy = spriteRenderer as? Enemy {
+            enemy.startMoving()
+        }
+        return spriteRenderer
     }
 
     static func createSprite(for model: SpriteModel) -> SpriteRenderable? {
@@ -74,12 +92,18 @@ private extension LevelEngine {
         switch type {
         case .mario:
             return Mario.shared
+        case .goomba:
+            return Goomba()
         case .block:
             return Block()
         case .brick:
             return Brick()
+        case .pipe:
+            return Pipe()
         case .bush:
             return Bush()
+        case .cloud:
+            return Cloud()
         case .padBottom:
             return PadBottom()
         case .padTop:
@@ -99,7 +123,7 @@ private extension LevelEngine {
         var maxIndex = 0
         var modelHash = [Int: [SpriteModel]]()
 
-        for model in spriteModels {
+        let copyBlock = { (_ model: SpriteModel) in
             if var array = modelHash[model.index] {
                 array.append(model)
                 modelHash[model.index] = array
@@ -107,6 +131,17 @@ private extension LevelEngine {
                 modelHash[model.index] = [model]
             }
             maxIndex = max(maxIndex, model.index)
+        }
+
+        for model in spriteModels {
+            guard let endIndex = model.endIndex else {
+                copyBlock(model)
+                continue
+            }
+            for i in model.index...endIndex {
+                let aModel = SpriteModel(type: model.type, index: i, height: model.height)
+                copyBlock(aModel)
+            }
         }
 
         var indices = [[SpriteModel]]()

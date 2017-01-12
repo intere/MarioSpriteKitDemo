@@ -11,13 +11,15 @@ import SpriteKit
 public class SpriteModel {
     var type: String = ""
     var index: Int = 0
+    var endIndex: Int?
     var height: Int = 0
 
     init() {}
 
-    init(type: String = "", index: Int = 0, height: Int = 0) {
+    init(type: String = "", index: Int = 0, endIndex: Int? = nil, height: Int = 0) {
         self.type = type
         self.index = index
+        self.endIndex = endIndex
         self.height = height
     }
 }
@@ -27,11 +29,15 @@ public class SpriteModel {
 public extension SpriteModel {
 
     public func toMap() -> [String: Any] {
-        return [
+        var map: [String: Any] = [
             "type": type,
             "index": index,
             "height": height
         ]
+        if let endIndex = endIndex {
+            map["endIndex"] = endIndex
+        }
+        return map
     }
 
     static func fromMap(map: [String: Any]) -> SpriteModel? {
@@ -45,6 +51,9 @@ public extension SpriteModel {
         model.type = type
         model.index = index
         model.height = height
+        if let endIndex = map["endIndex"] as? Int {
+            model.endIndex = endIndex
+        }
         return model
     }
 }

@@ -25,7 +25,7 @@ public class GameScene: SKScene {
         super.init(size: view.frame.size)
         let engine = LevelEngine(scene: self, spriteModels: spriteModels)
         engine.renderAll()
-        let camera = PlayerCameraNode(player: mario.sprite, blockSize: engine.blockSize)
+        let camera = PlayerCameraNode(player: mario.sprite, blockSize: LevelEngine.blockSize)
         addChild(camera)
         self.camera = camera
         self.engine = engine

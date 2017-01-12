@@ -9,6 +9,16 @@ public extension SKTexture {
         return SKTexture(image: #imageLiteral(resourceName: "mario_003_0043"))
     }
 
+    /// Goombas
+    public static var goomba: [SKTexture] {
+        return [SKTexture(image: #imageLiteral(resourceName: "goomba_1")), SKTexture(image: #imageLiteral(resourceName: "goomba_2"))]
+    }
+
+    /// Dead Goomba
+    public static var goombaDead: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "goomba_dead"))
+    }
+
     /// The mario textures
     public static var marioRun: [SKTexture] {
         return loadMarioTextures(from: 43, to: 47)
@@ -17,6 +27,11 @@ public extension SKTexture {
     /// The brick texture
     public static var brick: SKTexture {
         return SKTexture(image: #imageLiteral(resourceName: "brick"))
+    }
+
+    /// The pipe texture
+    public static var pipe: SKTexture {
+        return SKTexture(image: #imageLiteral(resourceName: "pipe"))
     }
 
     /// The "Pad Top"

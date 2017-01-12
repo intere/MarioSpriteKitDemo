@@ -13,45 +13,42 @@ import GameplayKit
 class GameViewController: UIViewController {
 
     let models = [
-        SpriteModel(type: "brick", index: 0, height: 2),
-        SpriteModel(type: "brick", index: 1, height: 2),
-        SpriteModel(type: "brick", index: 2, height: 2),
-        SpriteModel(type: "brick", index: 3, height: 2),
-        SpriteModel(type: "brick", index: 4, height: 2),
-        SpriteModel(type: "brick", index: 5, height: 2),
-        SpriteModel(type: "brick", index: 6, height: 2),
-        SpriteModel(type: "brick", index: 7, height: 2),
-        SpriteModel(type: "brick", index: 8, height: 2),
-        SpriteModel(type: "brick", index: 9, height: 2),
-        SpriteModel(type: "empty", index: 10, height: 2),
-        SpriteModel(type: "empty", index: 11, height: 2),
-        SpriteModel(type: "empty", index: 12, height: 2),
-        SpriteModel(type: "empty", index: 13, height: 2),
+        SpriteModel(type: "brick", index: 0, endIndex: 9, height: 2),
+
+        SpriteModel(type: "empty", index: 10, endIndex: 13, height: 2),
         SpriteModel(type: "pad_top", index: 14, height: 2),
-        SpriteModel(type: "empty", index: 15, height: 2),
-        SpriteModel(type: "empty", index: 16, height: 2),
-        SpriteModel(type: "empty", index: 17, height: 2),
-        SpriteModel(type: "empty", index: 18, height: 2),
+        SpriteModel(type: "empty", index: 15, endIndex: 18, height: 2),
+
+        SpriteModel(type: "brick", index: 19, endIndex: 250, height: 2),
 
         SpriteModel(type: "bush", index: 7, height: 3),
+        SpriteModel(type: "bush", index: 30, height: 3),
+        SpriteModel(type: "bush", index: 55, height: 3),
+        SpriteModel(type: "bush", index: 100, height: 3),
+        SpriteModel(type: "bush", index: 125, height: 3),
 
-        SpriteModel(type: "block", index: 4, height: 6),
-        SpriteModel(type: "mario", index: 4, height: 3)
+        SpriteModel(type: "cloud", index: 15, height: 10),
+        SpriteModel(type: "cloud", index: 33, height: 10),
+        SpriteModel(type: "cloud", index: 45, height: 10),
+        SpriteModel(type: "cloud", index: 58, height: 10),
+        SpriteModel(type: "cloud", index: 66, height: 10),
+        SpriteModel(type: "cloud", index: 105, height: 10),
+        SpriteModel(type: "cloud", index: 125, height: 10),
+        SpriteModel(type: "cloud", index: 175, height: 10),
+
+        SpriteModel(type: "block", index: 25, height: 6),
+        SpriteModel(type: "mario", index: 15, height: 3),
+
+        SpriteModel(type: "pipe", index: 30, height: 2),
+        SpriteModel(type: "goomba", index: 49, height: 3),
+        SpriteModel(type: "pipe", index: 50, height: 2)
     ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            var models = [SpriteModel]()
-            self.models.forEach { models.append($0) }
-            for i in 19...250 {
-                models.append(SpriteModel(type: "brick", index: i, height: 2))
-                if i % 20 == 0 {
-                    models.append(SpriteModel(type: "brick", index: i, height: (i % 20 != 0) ? 2 : 3 ))
-                }
-            }
-            let scene = GameScene(view: view, spriteModels: models )
+            let scene = GameScene(view: view, spriteModels: models)
             view.presentScene(scene)
             
             view.ignoresSiblingOrder = true
