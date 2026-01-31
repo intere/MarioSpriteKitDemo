@@ -69,3 +69,13 @@ fastlane/report.xml
 fastlane.log
 fastlane/README.md
 fastlane/test_output
+
+# Tuist
+#
+# Tuist generates the Xcode project, so we can ignore it
+# Run `tuist generate` to recreate the project
+*.xcodeproj
+*.xcworkspace
+Tuist/.build/
+.tuist-bin/
+Derived/
