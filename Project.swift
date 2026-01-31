@@ -7,7 +7,7 @@ let project = Project(
         defaultKnownRegions: ["en"],
         developmentRegion: "en"
     ),
-    settings: Settings.settings(
+    settings: .settings(
         base: [
             "DEVELOPMENT_TEAM": "",
             "MARKETING_VERSION": "1.0",
@@ -21,23 +21,23 @@ let project = Project(
         ]
     ),
     targets: [
-        Target.target(
+        Target(
             name: "MarioSpriteKitDemo",
             destinations: .iOS,
             product: .app,
             bundleId: "com.icolasoft.MarioSpriteKitDemo",
             deploymentTargets: .iOS("14.0"),
-            infoPlist: InfoPlist.extendingDefault(with: [
+            infoPlist: .extendingDefault(with: [
                 "UILaunchStoryboardName": "LaunchScreen",
                 "UIMainStoryboardFile": "Main",
-                "UISupportedInterfaceOrientations": Plist.Value.array([
+                "UISupportedInterfaceOrientations": [
                     "UIInterfaceOrientationLandscapeLeft",
                     "UIInterfaceOrientationLandscapeRight"
-                ]),
-                "UISupportedInterfaceOrientations~ipad": Plist.Value.array([
+                ],
+                "UISupportedInterfaceOrientations~ipad": [
                     "UIInterfaceOrientationLandscapeLeft",
                     "UIInterfaceOrientationLandscapeRight"
-                ]),
+                ],
                 "UIStatusBarHidden": true,
                 "UIRequiresFullScreen": true,
                 "UIViewControllerBasedStatusBarAppearance": false
@@ -48,20 +48,20 @@ let project = Project(
                 "MarioSpriteKitDemo/Base.lproj/**"
             ],
             dependencies: [],
-            settings: Settings.settings(
+            settings: .settings(
                 base: [
                     "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
                     "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": "YES",
                 ]
             )
         ),
-        Target.target(
+        Target(
             name: "MarioSpriteKitDemoTests",
             destinations: .iOS,
             product: .unitTests,
             bundleId: "com.icolasoft.MarioSpriteKitDemoTests",
             deploymentTargets: .iOS("14.0"),
-            infoPlist: InfoPlist.default,
+            infoPlist: .default,
             sources: ["MarioSpriteKitDemoTests/**/*.swift"],
             dependencies: [
                 .target(name: "MarioSpriteKitDemo")
@@ -69,15 +69,15 @@ let project = Project(
         )
     ],
     schemes: [
-        Scheme.scheme(
+        Scheme(
             name: "MarioSpriteKitDemo",
             shared: true,
-            buildAction: BuildAction.buildAction(targets: ["MarioSpriteKitDemo"]),
-            testAction: TestAction.targets(["MarioSpriteKitDemoTests"]),
-            runAction: RunAction.runAction(configuration: "Debug"),
-            archiveAction: ArchiveAction.archiveAction(configuration: "Release"),
-            profileAction: ProfileAction.profileAction(configuration: "Release"),
-            analyzeAction: AnalyzeAction.analyzeAction(configuration: "Debug")
+            buildAction: .buildAction(targets: ["MarioSpriteKitDemo"]),
+            testAction: .targets(["MarioSpriteKitDemoTests"]),
+            runAction: .runAction(configuration: "Debug"),
+            archiveAction: .archiveAction(configuration: "Release"),
+            profileAction: .profileAction(configuration: "Release"),
+            analyzeAction: .analyzeAction(configuration: "Debug")
         )
     ]
 )
