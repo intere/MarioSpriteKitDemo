@@ -23,10 +23,10 @@ let project = Project(
     targets: [
         Target(
             name: "MarioSpriteKitDemo",
-            destinations: .iOS,
+            platform: .iOS,
             product: .app,
             bundleId: "com.icolasoft.MarioSpriteKitDemo",
-            deploymentTargets: .iOS("14.0"),
+            deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone, .ipad]),
             infoPlist: .extendingDefault(with: [
                 "UILaunchStoryboardName": "LaunchScreen",
                 "UIMainStoryboardFile": "Main",
@@ -57,10 +57,10 @@ let project = Project(
         ),
         Target(
             name: "MarioSpriteKitDemoTests",
-            destinations: .iOS,
+            platform: .iOS,
             product: .unitTests,
             bundleId: "com.icolasoft.MarioSpriteKitDemoTests",
-            deploymentTargets: .iOS("14.0"),
+            deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone, .ipad]),
             infoPlist: .default,
             sources: ["MarioSpriteKitDemoTests/**/*.swift"],
             dependencies: [
