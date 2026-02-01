@@ -18,20 +18,22 @@ class GameViewController: UIViewController {
             fatalError("View is not an SKView")
         }
 
-        // Create and configure the menu scene
-        let scene = MenuScene(size: CGSize(
-            width: GameConstants.sceneWidth,
-            height: GameConstants.sceneHeight
-        ))
-        scene.scaleMode = .aspectFill
+        // Use the view's bounds for the scene size
+        // This ensures the scene fills the screen properly
+        let sceneSize = view.bounds.size
+
+        // Create menu scene that fills the view
+        let scene = MenuScene(size: sceneSize)
+        scene.scaleMode = .aspectFit
 
         // Present the scene
         view.presentScene(scene)
 
         // Configure view
         view.ignoresSiblingOrder = true
+        view.isMultipleTouchEnabled = true
 
-        // Debug info (disable for release)
+        // Debug info
         #if DEBUG
         view.showsFPS = true
         view.showsNodeCount = true

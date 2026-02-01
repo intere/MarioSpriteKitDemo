@@ -37,9 +37,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var jumpTouchActive = false
     var runTouchActive = false
 
-    /// Is the game paused?
-    var isPaused: Bool = false
-
     /// Touch control nodes
     var leftButton: SKSpriteNode!
     var rightButton: SKSpriteNode!
@@ -49,6 +46,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Initialization
 
     override func didMove(to view: SKView) {
+        // Set background color
+        backgroundColor = GameConstants.skyColor
+
+        // Scene anchor at bottom-left
+        anchorPoint = CGPoint(x: 0, y: 0)
+
         // Setup physics
         physicsWorld.gravity = CGVector(dx: 0, dy: GameConstants.gravity)
         physicsWorld.contactDelegate = self
@@ -76,7 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         GameState.shared.timeRemaining = levelData.timeLimit
 
         // Position camera initially
-        updateCamera()
+        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
     }
 
     // MARK: - Setup
@@ -89,34 +92,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func setupTouchControls() {
         let buttonSize = CGSize(width: 60, height: 60)
-        let buttonAlpha: CGFloat = 0.4
+        let buttonAlpha: CGFloat = 0.5
 
-        // Left button
+        // Left button - bottom left
         leftButton = SKSpriteNode(color: .white, size: buttonSize)
         leftButton.alpha = buttonAlpha
-        leftButton.position = CGPoint(x: -size.width/2 + 60, y: -size.height/2 + 60)
+        leftButton.position = CGPoint(x: -size.width/2 + 50, y: -size.height/2 + 50)
         leftButton.name = "leftButton"
+        leftButton.zPosition = 10
         cameraNode.addChild(leftButton)
 
-        // Right button
+        // Right button - next to left
         rightButton = SKSpriteNode(color: .white, size: buttonSize)
         rightButton.alpha = buttonAlpha
-        rightButton.position = CGPoint(x: -size.width/2 + 130, y: -size.height/2 + 60)
+        rightButton.position = CGPoint(x: -size.width/2 + 120, y: -size.height/2 + 50)
         rightButton.name = "rightButton"
+        rightButton.zPosition = 10
         cameraNode.addChild(rightButton)
 
-        // Jump button
+        // Jump button (A) - bottom right
         jumpButton = SKSpriteNode(color: .red, size: CGSize(width: 70, height: 70))
         jumpButton.alpha = buttonAlpha
-        jumpButton.position = CGPoint(x: size.width/2 - 70, y: -size.height/2 + 70)
+        jumpButton.position = CGPoint(x: size.width/2 - 60, y: -size.height/2 + 60)
         jumpButton.name = "jumpButton"
+        jumpButton.zPosition = 10
         cameraNode.addChild(jumpButton)
 
-        // Run button
+        // Run button (B) - next to jump
         runButton = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
         runButton.alpha = buttonAlpha
-        runButton.position = CGPoint(x: size.width/2 - 140, y: -size.height/2 + 60)
+        runButton.position = CGPoint(x: size.width/2 - 130, y: -size.height/2 + 50)
         runButton.name = "runButton"
+        runButton.zPosition = 10
         cameraNode.addChild(runButton)
 
         // Add labels
@@ -129,9 +136,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func addButtonLabel(to button: SKSpriteNode, text: String) {
         let label = SKLabelNode(text: text)
         label.fontName = "AvenirNext-Bold"
-        label.fontSize = 24
+        label.fontSize = 20
         label.fontColor = .black
         label.verticalAlignmentMode = .center
+        label.horizontalAlignmentMode = .center
         button.addChild(label)
     }
 
@@ -148,6 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func update(_ currentTime: TimeInterval) {
         guard GameState.shared.gameMode == .playing else { return }
+        guard mario != nil else { return }
 
         // Calculate delta time
         let deltaTime = lastUpdateTime == 0 ? 0 : currentTime - lastUpdateTime
@@ -184,8 +193,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func updateCamera() {
         guard let mario = mario else { return }
 
-        // Camera follows Mario horizontally, stays fixed vertically
+        // Camera follows Mario horizontally
         var cameraX = mario.position.x
+
+        // Keep camera Y fixed to show ground level
         let cameraY = size.height / 2
 
         // Clamp camera to level bounds
@@ -195,10 +206,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraX = max(minX, min(cameraX, maxX))
 
         // Smooth camera movement
-        let targetPosition = CGPoint(x: cameraX, y: cameraY)
         let smoothing: CGFloat = 0.1
-        cameraNode.position.x += (targetPosition.x - cameraNode.position.x) * smoothing
-        cameraNode.position.y = targetPosition.y
+        cameraNode.position.x += (cameraX - cameraNode.position.x) * smoothing
+        cameraNode.position.y = cameraY
     }
 
     // MARK: - Touch Handling
@@ -208,10 +218,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: cameraNode)
             handleTouchDown(at: location)
         }
-    }
-
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Handle drag between buttons if needed
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -228,40 +234,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func handleTouchDown(at location: CGPoint) {
         if leftButton.contains(location) {
             leftTouchActive = true
-            mario.moveInput = -1
+            mario?.moveInput = -1
         } else if rightButton.contains(location) {
             rightTouchActive = true
-            mario.moveInput = 1
+            mario?.moveInput = 1
         } else if jumpButton.contains(location) {
             jumpTouchActive = true
-            mario.jump()
+            mario?.jump()
         } else if runButton.contains(location) {
             runTouchActive = true
-            mario.isRunning = true
+            mario?.isRunning = true
         }
     }
 
     private func handleTouchUp(at location: CGPoint) {
-        // Check which button was released
-        if leftButton.contains(location) || leftTouchActive {
+        if leftTouchActive {
             leftTouchActive = false
             if !rightTouchActive {
-                mario.moveInput = 0
+                mario?.moveInput = 0
             }
         }
-        if rightButton.contains(location) || rightTouchActive {
+        if rightTouchActive {
             rightTouchActive = false
             if !leftTouchActive {
-                mario.moveInput = 0
+                mario?.moveInput = 0
             }
         }
-        if jumpButton.contains(location) || jumpTouchActive {
+        if jumpTouchActive {
             jumpTouchActive = false
-            mario.variableJump()
+            mario?.variableJump()
         }
-        if runButton.contains(location) || runTouchActive {
+        if runTouchActive {
             runTouchActive = false
-            mario.isRunning = false
+            mario?.isRunning = false
         }
     }
 
@@ -270,7 +275,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
-        // Get nodes
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
 
@@ -305,27 +309,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Player + Hazard (death zone)
         if collision == PhysicsCategory.player | PhysicsCategory.hazard {
-            mario.die()
+            mario?.die()
         }
 
         // Player + Flagpole
         if collision == PhysicsCategory.player | PhysicsCategory.flagpole {
-            mario.grabFlagpole()
+            mario?.grabFlagpole()
         }
 
         // Player + Ground (landing)
         if collision == PhysicsCategory.player | PhysicsCategory.ground {
-            // Check if landing on top
             if contact.contactNormal.dy > 0.5 {
-                mario.landed()
+                mario?.landed()
             }
         }
 
-        // Enemy + Ground/Block (turn around at edges or walls)
+        // Enemy + wall (turn around)
         if (contact.bodyA.categoryBitMask == PhysicsCategory.enemy ||
             contact.bodyB.categoryBitMask == PhysicsCategory.enemy) {
             if let enemy = (nodeA as? Enemy) ?? (nodeB as? Enemy) {
-                // Turn around when hitting wall
                 if abs(contact.contactNormal.dx) > 0.5 {
                     enemy.turnAround()
                 }
@@ -340,33 +342,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
-
-        // Shell + Block
-        if collision == PhysicsCategory.shell | PhysicsCategory.block {
-            if let koopa = (nodeA as? KoopaTroopa) ?? (nodeB as? KoopaTroopa) {
-                koopa.shellBounce()
-            }
-        }
     }
 
     private func handlePlayerEnemyContact(_ contact: SKPhysicsContact) {
+        guard let mario = mario else { return }
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
 
-        // Determine which is enemy
         guard let enemy = (nodeA as? Enemy) ?? (nodeB as? Enemy) else { return }
 
-        // Check if it's a shell
         if let koopa = enemy as? KoopaTroopa {
             if koopa.koopaState == .shell {
-                // Kick the shell
                 let kickDirection: CGFloat = mario.position.x < koopa.position.x ? 1 : -1
                 koopa.kickShell(direction: kickDirection)
-                // Bounce Mario
                 mario.physicsBody?.velocity.dy = GameConstants.Enemy.stompBounce * 0.5
                 return
             } else if koopa.koopaState == .sliding {
-                // Hit by sliding shell
                 if !GameState.shared.isStarPowered {
                     mario.takeDamage()
                 }
@@ -374,38 +365,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-        // Normal enemy contact
         if GameState.shared.isStarPowered {
-            enemy.hitByFireball() // Star power kills enemies
+            enemy.hitByFireball()
         } else {
             mario.takeDamage()
         }
     }
 
     private func handlePlayerStompEnemy(_ contact: SKPhysicsContact) {
+        guard let mario = mario, let marioBody = mario.physicsBody else { return }
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
 
         guard let enemy = (nodeA as? Enemy) ?? (nodeB as? Enemy) else { return }
-        guard let marioBody = mario.physicsBody else { return }
 
-        // Only count as stomp if Mario is falling
         if marioBody.velocity.dy < -50 {
             enemy.stomp()
-
-            // Bounce Mario
             marioBody.velocity.dy = GameConstants.Enemy.stompBounce
         }
     }
 
     private func handlePlayerBlockContact(_ contact: SKPhysicsContact) {
+        guard let mario = mario, let marioBody = mario.physicsBody else { return }
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
 
         guard let block = (nodeA as? Tile) ?? (nodeB as? Tile) else { return }
-        guard let marioBody = mario.physicsBody else { return }
 
-        // Check if hitting from below (Mario moving up, hit bottom of block)
         if marioBody.velocity.dy > 50 && mario.position.y < block.position.y {
             block.hitFromBelow(by: mario)
         }
@@ -417,12 +403,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let gameOver = GameState.shared.loseLife()
 
         if gameOver {
-            // Show game over screen
             let transition = SKTransition.fade(withDuration: 1.0)
             let gameOverScene = GameOverScene(size: size)
             view?.presentScene(gameOverScene, transition: transition)
         } else {
-            // Restart level
             restartLevel()
         }
     }
@@ -430,11 +414,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     @objc private func levelComplete() {
         GameState.shared.gameMode = .levelComplete
 
-        // Calculate time bonus
         let timeBonus = GameState.shared.timeRemaining * GameConstants.Level.timeBonus
         GameState.shared.addScore(timeBonus)
 
-        // Show level complete UI, then advance
         run(SKAction.wait(forDuration: 3.0)) { [weak self] in
             GameState.shared.advanceLevel()
             self?.restartLevel()
@@ -442,12 +424,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     @objc private func handlePipeWarp(_ notification: Notification) {
-        // Handle pipe warping
         guard let userInfo = notification.userInfo,
               let destX = userInfo["destinationX"] as? Int,
               let destY = userInfo["destinationY"] as? Int else { return }
 
-        // Warp Mario to destination
         run(SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
             SKAction.run { [weak self] in
@@ -462,25 +442,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func restartLevel() {
-        // Clean up current level
         levelLoader.cleanup()
         mario?.removeFromParent()
 
-        // Reset state for new attempt
         GameState.shared.resetForNewLevel()
-
-        // Reload level
         mario = levelLoader.loadLevel(levelData, into: self)
 
-        // Reset camera
         cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-
-        // Resume game
         GameState.shared.gameMode = .playing
         lastUpdateTime = 0
     }
-
-    // MARK: - Cleanup
 
     deinit {
         NotificationCenter.default.removeObserver(self)

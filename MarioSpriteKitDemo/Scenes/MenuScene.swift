@@ -19,11 +19,14 @@ class MenuScene: SKScene {
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
+        // Set anchor at bottom-left for consistency
+        anchorPoint = CGPoint(x: 0, y: 0)
         backgroundColor = GameConstants.skyColor
+
+        setupGround()
         setupTitle()
         setupMario()
         setupMenu()
-        setupGround()
         animateScene()
     }
 
@@ -33,14 +36,15 @@ class MenuScene: SKScene {
         // Main title
         titleLabel = SKLabelNode(text: "SUPER MARIO BROS")
         titleLabel.fontName = "AvenirNext-Heavy"
-        titleLabel.fontSize = 36
+        titleLabel.fontSize = 32
         titleLabel.fontColor = .white
         titleLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.75)
+        titleLabel.zPosition = 10
 
         // Add shadow for depth
         let shadow = SKLabelNode(text: "SUPER MARIO BROS")
         shadow.fontName = "AvenirNext-Heavy"
-        shadow.fontSize = 36
+        shadow.fontSize = 32
         shadow.fontColor = .black
         shadow.position = CGPoint(x: 2, y: -2)
         shadow.zPosition = -1
@@ -51,16 +55,18 @@ class MenuScene: SKScene {
         // Subtitle
         let subtitle = SKLabelNode(text: "SpriteKit Edition")
         subtitle.fontName = "AvenirNext-Medium"
-        subtitle.fontSize = 16
+        subtitle.fontSize = 14
         subtitle.fontColor = .yellow
         subtitle.position = CGPoint(x: size.width / 2, y: size.height * 0.68)
+        subtitle.zPosition = 10
         addChild(subtitle)
     }
 
     private func setupMario() {
         marioSprite = SKSpriteNode(imageNamed: "mario_003_0043")
-        marioSprite.setScale(3.0)
+        marioSprite.setScale(2.5)
         marioSprite.position = CGPoint(x: size.width / 2, y: size.height * 0.45)
+        marioSprite.zPosition = 5
         addChild(marioSprite)
 
         // Idle animation
@@ -77,9 +83,10 @@ class MenuScene: SKScene {
         // Press Start
         pressStartLabel = SKLabelNode(text: "TAP TO START")
         pressStartLabel.fontName = "AvenirNext-Bold"
-        pressStartLabel.fontSize = 20
+        pressStartLabel.fontSize = 18
         pressStartLabel.fontColor = .white
         pressStartLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.25)
+        pressStartLabel.zPosition = 10
         addChild(pressStartLabel)
 
         // Blinking animation
@@ -93,46 +100,55 @@ class MenuScene: SKScene {
         let highScore = GameState.shared.highScore
         highScoreLabel = SKLabelNode(text: "HIGH SCORE: \(String(format: "%06d", highScore))")
         highScoreLabel.fontName = "AvenirNext-Medium"
-        highScoreLabel.fontSize = 14
+        highScoreLabel.fontSize = 12
         highScoreLabel.fontColor = .yellow
         highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height * 0.15)
+        highScoreLabel.zPosition = 10
         addChild(highScoreLabel)
 
         // Credits
         let credits = SKLabelNode(text: "© NINTENDO - CLONE FOR EDUCATIONAL PURPOSES")
         credits.fontName = "AvenirNext-Regular"
-        credits.fontSize = 10
+        credits.fontSize = 8
         credits.fontColor = SKColor(white: 1, alpha: 0.5)
-        credits.position = CGPoint(x: size.width / 2, y: 30)
+        credits.position = CGPoint(x: size.width / 2, y: 20)
+        credits.zPosition = 10
         addChild(credits)
     }
 
     private func setupGround() {
-        // Create ground strip at bottom
-        let groundHeight: CGFloat = 64
-        for i in 0..<Int(size.width / 32) + 1 {
-            let brick = SKSpriteNode(imageNamed: "brick")
-            brick.size = CGSize(width: 32, height: 32)
-            brick.position = CGPoint(x: CGFloat(i) * 32 + 16, y: groundHeight - 16)
-            addChild(brick)
+        // Create ground strip at bottom using brick texture
+        let tileSize: CGFloat = 32
+        let tilesNeeded = Int(size.width / tileSize) + 1
 
+        for i in 0..<tilesNeeded {
+            // Bottom row
+            let brick1 = SKSpriteNode(imageNamed: "brick")
+            brick1.size = CGSize(width: tileSize, height: tileSize)
+            brick1.position = CGPoint(x: CGFloat(i) * tileSize + tileSize/2, y: tileSize/2)
+            brick1.zPosition = 1
+            addChild(brick1)
+
+            // Second row
             let brick2 = SKSpriteNode(imageNamed: "brick")
-            brick2.size = CGSize(width: 32, height: 32)
-            brick2.position = CGPoint(x: CGFloat(i) * 32 + 16, y: groundHeight - 48)
+            brick2.size = CGSize(width: tileSize, height: tileSize)
+            brick2.position = CGPoint(x: CGFloat(i) * tileSize + tileSize/2, y: tileSize + tileSize/2)
+            brick2.zPosition = 1
             addChild(brick2)
         }
     }
 
     private func animateScene() {
         // Title drop animation
+        let originalY = titleLabel.position.y
         titleLabel.position.y = size.height + 50
-        let dropTitle = SKAction.moveTo(y: size.height * 0.75, duration: 0.8)
+        let dropTitle = SKAction.moveTo(y: originalY, duration: 0.8)
         dropTitle.timingMode = .easeOut
         titleLabel.run(dropTitle)
 
         // Mario bounce in
         marioSprite.setScale(0)
-        let scaleIn = SKAction.scale(to: 3.0, duration: 0.5)
+        let scaleIn = SKAction.scale(to: 2.5, duration: 0.5)
         scaleIn.timingMode = .easeOut
         marioSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
@@ -150,9 +166,9 @@ class MenuScene: SKScene {
         // Reset game state
         GameState.shared.reset()
 
-        // Transition to game scene
+        // Transition to game scene with same size
         let gameScene = GameScene(size: size)
-        gameScene.scaleMode = .aspectFill
+        gameScene.scaleMode = scaleMode
 
         let transition = SKTransition.fade(withDuration: 0.5)
         view?.presentScene(gameScene, transition: transition)
